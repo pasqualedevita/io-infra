@@ -68,7 +68,7 @@ jobs:
                   docker run -v "$(pwd):/src" aquasec/tfsec /src --format=sarif --tfvars-file=/src/"$env"/terraform.tfvars > result.sarif
                   cat result.sarif
                   # codeql github upload-results --sarif=result.sarif
-                  CODEQL_CLI_ARGS="github upload-results --sarif=result.sarif"
+                  CODEQL_CLI_ARGS="github upload-results --sarif=/src/result.sarif"
                   docker run -v "$(pwd):/src" mcr.microsoft.com/cstsectools/codeql-container /src -e CODEQL_CLI_ARGS=${CODEQL_CLI_ARGS}
                   exit 0
                 fi
