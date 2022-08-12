@@ -1,71 +1,75 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# # This workflow uses actions that are not certified by GitHub.
+# # They are provided by a third-party and are governed by
+# # separate terms of service, privacy policy, and support
+# # documentation.
 
-name: tfsec
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]  
-  schedule:
-    - cron: '31 7 * * 3'
-
-jobs:
-  tfsec:
-    name: Run tfsec sarif report
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v3
-
-      - name: Run tfsec
-        uses: aquasecurity/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
-        with:
-          sarif_file: tfsec.sarif
-          tfsec_args: --force-all-dirs
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: tfsec.sarif  
-
-# name: Static Analysis
+# name: tfsec
 
 # on:
 #   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]  
+#   schedule:
+#     - cron: '31 7 * * 3'
 
 # jobs:
-#   static_analysis:
+#   tfsec:
+#     name: Run tfsec sarif report
 #     runs-on: ubuntu-latest
+#     permissions:
+#       actions: read
+#       contents: read
+#       security-events: write
 
 #     steps:
-#       - uses: actions/checkout@v2
+#       - name: Clone repo
+#         uses: actions/checkout@v3
 
-#       - name: init_src
-#         run: |
-#           TAG=$(cat .terraform-version)
-#           cd src
-#           for folder in *; do
-#             if [ -d "$folder" ]; then
-#               # exclude psql folder from static analysis
-#               [[ -d "$folder" && "$folder" =~ psql ]] && continue
-#               echo "🔬 folder: $folder in under terraform"
-#               cd "$folder" || exit 1
-#               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-#               docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
-#               cd ..
-#             fi
-#           done
-#       - name: run_test
-#         run: |
-#           TAG=nightly
-#           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
+#       - name: Run tfsec
+#         uses: aquasecurity/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
+#         with:
+#           sarif_file: tfsec.sarif
+#           tfsec_args: --force-all-dirs
+
+#       - name: Upload SARIF file
+#         uses: github/codeql-action/upload-sarif@v2
+#         with:
+#           # Path to SARIF file relative to the root of the repository
+#           sarif_file: tfsec.sarif  
+
+name: Static Analysis
+
+on:
+  push:
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: tfsec
+        run: |
+          TAG=$(cat .terraform-version)
+          cd src
+          for folder in *; do
+            if [ -d "$folder" ]; then
+              # exclude psql folder from static analysis
+              [[ -d "$folder" && "$folder" =~ psql ]] && continue
+
+              echo "🔬 folder: $folder in under terraform"
+              cd "$folder" || exit 1
+
+              for envs in env/*; do
+                if [ -d "$folder" ]; then
+                  docker run --rm -it -v "$(pwd):/src" aquasec/tfsec /src --format=sarif --tfvars-file=$envs/terraform.tfvars > result.sarif
+                  cat result.sarif
+                  codeql github upload-results --sarif=result.sarif
+                fi
+              done
+
+              cd ..
+            fi
+          done
