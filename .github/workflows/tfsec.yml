@@ -65,7 +65,7 @@ jobs:
               for env in env/*; do
                 echo "$env"
                 if [ -d "$env" ]; then
-                  docker run -v "$(pwd):/src" aquasec/tfsec /src --format=sarif --tfvars-file="$env"/terraform.tfvars > result.sarif
+                  docker run -v "$(pwd):/src" aquasec/tfsec /src --format=sarif --tfvars-file=/src/"$env"/terraform.tfvars > result.sarif
                   cat result.sarif
                   codeql github upload-results --sarif=result.sarif
                 fi
