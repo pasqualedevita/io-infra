@@ -51,5 +51,6 @@ jobs:
           sarif_file: ${{ matrix.dir }}/tfsec.sarif
 
       - name: Check sarif
+        if: steps.check_env.outputs.ENV_EXITS == 'true'
         run: |
           cat ${{ matrix.dir }}/tfsec.sarif
