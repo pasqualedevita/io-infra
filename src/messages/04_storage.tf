@@ -67,7 +67,6 @@ resource "azurerm_storage_management_policy" "services_storage" {
   }
 }
 
-#tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "services_storage_connection_string" {
   name         = "${module.services_storage.name}-connection-string"
   value        = module.services_storage.primary_connection_string

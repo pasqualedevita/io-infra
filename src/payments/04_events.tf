@@ -69,7 +69,6 @@ resource "azurerm_key_vault_secret" "event_hub_keys" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-#tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "event_hub_jaas_connection_string" {
   for_each = var.ehns_enabled ? module.event_hub[0].key_ids : {}
 

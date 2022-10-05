@@ -23,7 +23,6 @@ data "kubernetes_secret" "azure_devops_secret" {
   }
 }
 
-#tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
   depends_on   = [kubernetes_service_account.azure_devops]
   name         = "${local.aks_name}-azure-devops-sa-token"
@@ -33,7 +32,6 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-#tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
   depends_on   = [kubernetes_service_account.azure_devops]
   name         = "${local.aks_name}-azure-devops-sa-cacrt"
