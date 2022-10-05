@@ -55,11 +55,12 @@ jobs:
       - name: Check sarif
         if: steps.check_env.outputs.ENV_EXITS == 'true'
         run: |
-          cat ${{ matrix.dir }}/tfsec.sarif
+          # cat ${{ matrix.dir }}/tfsec.sarif
           if key=$(jq -re .runs[].results[0].ruleId ${{ matrix.dir }}/tfsec.sarif)
           then
             # If the array was not empty, $key contains the first key
-            echo "There is a vulnerability in key $key."
+            echo "There are possibile vulnerability"
+            echo "Check the report here"
             echo "https://github.com/${{ github.repository }}/security/code-scanning?query=branch%3A${{ github.ref_name }}"
             exit 1
           fi
