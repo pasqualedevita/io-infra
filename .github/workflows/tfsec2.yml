@@ -41,7 +41,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: ${{ matrix.dir }}/tfsec.sarif
+          sarif_file: ${{ matrix.dir }}/pippo.tfsec.sarif
 
 # name: Static Analysis
 
