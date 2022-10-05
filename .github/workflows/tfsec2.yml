@@ -60,5 +60,6 @@ jobs:
           then
             # If the array was not empty, $key contains the first key
             echo "There is a vulnerability in key $key."
+            echo "https://github.com/${github.repository}/security/code-scanning?query=branch%3A${github.ref_name}""
             exit 1
           fi
