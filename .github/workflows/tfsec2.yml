@@ -18,8 +18,26 @@ jobs:
       security-events: write
     strategy:
       matrix:
-        dir: ["src/aks", "src/core"]
-        env: ["prod", "weu-beta", "weu-prod01", "weu-prod02"]
+        dir: [
+          "src/.template", 
+          "src/.template-common",
+          "src/aks",
+          "src/core",
+          "src/messages",
+          "src/messages-common",
+          "src/payments",
+          "src/payments-common",
+          "src/profile",
+          "src/profile-common",
+          "src/reminder",
+          "src/sign",
+        ]
+        env: [
+          "prod",
+          "weu-beta",
+          "weu-prod01",
+          "weu-prod02",
+        ]
 
     steps:
       - name: Clone repo
