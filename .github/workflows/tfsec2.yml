@@ -50,7 +50,6 @@ jobs:
           # Path to SARIF file relative to the root of the repository
           sarif_file: ${{ matrix.dir }}/tfsec.sarif
 
-      - name: Check env
-        id: check_env
+      - name: Check sarif
         run: |
           cat ${{ matrix.dir }}/tfsec.sarif
