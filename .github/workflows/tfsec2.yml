@@ -56,7 +56,7 @@ jobs:
         if: steps.check_env.outputs.ENV_EXITS == 'true'
         run: |
           cat ${{ matrix.dir }}/tfsec.sarif
-          if key=$(jq -re .runs[].results[0].ruleId tfsec_ko.sarif)
+          if key=$(jq -re .runs[].results[0].ruleId ${{ matrix.dir }}/tfsec.sarif)
           then
             # If the array was not empty, $key contains the first key
             echo "There is a vulnerability in key $key."
