@@ -8,7 +8,7 @@ name: tfsec
 on:
   push:
     paths:
-      - 'src/core/**'
+      - 'src/domains/messages-app/**'
   schedule:
     - cron: '22 19 * * 4'
 
@@ -23,10 +23,12 @@ jobs:
     strategy:
       matrix:
         dirs: [
-          "src/core",
+          "src/domains/messages-app",
         ]
         envs: [
-          "prod",
+          "weu-beta",
+          "weu-prod01",
+          "weu-prod02",
         ]
 
     steps:

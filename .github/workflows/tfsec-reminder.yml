@@ -8,7 +8,7 @@ name: tfsec
 on:
   push:
     paths:
-      - 'src/core/**'
+      - 'src/domains/reminder/**'
   schedule:
     - cron: '22 19 * * 4'
 
@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         dirs: [
-          "src/core",
+          "src/domains/reminder",
         ]
         envs: [
           "prod",
