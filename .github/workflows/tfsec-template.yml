@@ -9,6 +9,7 @@ on:
   push:
     paths:
       - 'src/.template/**'
+  pull_request:
   schedule:
     - cron: '22 19 * * 4'
 
