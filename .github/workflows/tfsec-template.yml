@@ -43,6 +43,7 @@ jobs:
           working_directory: ${{ matrix.dirs }}
           sarif_file: ${{ matrix.dirs }}/tfsec.sarif
           tfvars_file: ${{ matrix.dirs }}/env/${{ matrix.envs }}/terraform.tfvars
+          soft_fail: true
 
       - name: Upload SARIF file
         # from https://github.com/github/codeql-action/commits/main
