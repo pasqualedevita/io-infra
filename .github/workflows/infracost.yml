@@ -47,6 +47,7 @@ jobs:
       # Generate Infracost JSON file as the baseline.
       - name: Generate Infracost cost estimate baseline
         run: |
+          touch tmp/infracost-base.json
           infracost breakdown --path=${TF_ROOT} \
                               --format=json \
                               --terraform-var-file=env/prod/terraform.tfvars
@@ -59,6 +60,7 @@ jobs:
       # Generate an Infracost diff and save it to a JSON file.
       - name: Generate Infracost diff
         run: |
+          touch tmp/infracost.json
           infracost diff --path=${TF_ROOT} \
                           --format=json \
                           --terraform-var-file=env/prod/terraform.tfvars
