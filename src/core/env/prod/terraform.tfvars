@@ -49,7 +49,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_min_capacity                                          = 4 #4 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_min_capacity                                          = 10 #4 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
@@ -167,7 +167,7 @@ function_messages_cqrs_always_on = true
 function_messages_cqrs_kind              = "Linux"
 function_messages_cqrs_sku_tier          = "PremiumV3"
 function_messages_cqrs_sku_size          = "P1v3"
-function_messages_cqrs_autoscale_minimum = 1
+function_messages_cqrs_autoscale_minimum = 5
 function_messages_cqrs_autoscale_maximum = 30
 function_messages_cqrs_autoscale_default = 1
 
