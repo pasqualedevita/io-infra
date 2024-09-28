@@ -1,0 +1,53 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: tfsec
+
+on:
+  push:
+    paths:
+      - 'src/domains/messages-app/**'
+  schedule:
+    - cron: '22 19 * * 4'
+
+jobs:
+  tfsec:
+    name: Run tfsec sarif report
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      matrix:
+        dirs: [
+          "src/domains/messages-app",
+        ]
+        envs: [
+          "weu-beta",
+          "weu-prod01",
+          "weu-prod02",
+        ]
+
+    steps:
+      - name: Clone repo
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+
+      - name: Run tfsec
+        # from https://github.com/aquasecurity/tfsec-sarif-action/commits/master
+        uses: aquasecurity/tfsec-sarif-action@5d34a982aa8927c5dd8566d25ef248d526aac1f4
+        with:
+          working_directory: ${{ matrix.dirs }}
+          sarif_file: ${{ matrix.dirs }}/tfsec.sarif
+          tfvars_file: ${{ matrix.dirs }}/env/${{ matrix.envs }}/terraform.tfvars
+
+      - name: Upload SARIF file
+        # from https://github.com/github/codeql-action/commits/main
+        uses: github/codeql-action/upload-sarif@f0a12816612c7306b485a22cb164feb43c6df818
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: ${{ matrix.dirs }}/tfsec.sarif
+          category: ${{ matrix.dirs }}_${{ matrix.envs }}
